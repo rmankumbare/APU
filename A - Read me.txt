@@ -1,0 +1,199 @@
+FOR HHP SYSTEM
+//---------------------------------Version H2.8--------------------------------------------------------------------------------------------------------
+
+//---------------------------------Version H2.7--------------------------------------------------------------------------------------------------------
+5th May : 1. DC CONTACTER should be turned off only when APU Engine stops successfully.
+             In prev version Once engine stop command received DC Contacter was turning OFF.
+ 
+//---------------------------------Version H2.6--------------------------------------------------------------------------------------------------------
+5th May : 1. In APU engine ON condition DC contacter logic changed 
+             DC contacter will turn on without any condition. Once Engine is ON contacter should remain ON.
+             DC contacter should be OFF when rectifier current overloads i.e. it exceeds 114 amp.
+             DC contacter should be OFF when rectifier voltage(APU voltage 72 V) exceeds 84 V.
+          
+//---------------------------------Version H2.5---------------------------------------------------------------------------------------------------------
+28th April: 1. Fuel transfer pump will be on-off in engine on & off both conditions whether it is auto or manual mode.
+               It will sense the values & take decesion according to that.  
+
+//---------------------------------Version H2.3---------------------------------------------------------------------------------------------------------
+24th April: 1. IN GUI healthyness status all parameters are used to send eng healthiness status.
+            2. In fail to stop mode, if emergency stop pressed then it will break the infinite loop & come out of loop. 
+            3. In engine off condition FTP ON-OFF commands are modified as per sibas mode flag.
+//---------------------------------Version H2.2----------------------------------------------------------------------------------------------------------
+22nd April: 1.Rectifier temperature sensing is added. It is similar to Eng coolant temp. RTD sensor. It is a nonlinear type having look up table.
+              channel name       =  Canopy temp
+              adc no             =  ADC 3 
+              terminal no        =  19
+              Port pin           =  PB1   
+
+21st April: 1. Code optimization done.
+
+//---------------------------------Version H2.1----------------------------------------------------------------------------------------------------------
+     
+20th April: 1. GUI mistake removed.
+               In download command APU batt 12 V warnings removed as per GUI protocol, but in Master program those were present .
+               After removing them everything is fine.
+
+19th April: 
+
+             1.If ethernet initilised display will send 'Z' that means APU is in SIBAS mode. So FTP, Load/unload should occure according to SIBAS not according to value read from EEPROM  
+
+             2. In LCU discrete byte 1 following commands added
+                FTP ON/OFF
+                COMP LOAD/UNLOAD
+                EMERGENCY STOP
+
+             3. Initially when ethernet initilised then display sends command 'Z' to master indicates that APU is in SIBAS mode
+  
+             4. FTP on-off flag , loco_emergency_stop_flag added in frame.
+
+//-----------------------------VARANASI DLW ----Version H2.0----------------------------------------------------------------------------------------------------------
+13th April :
+            1. Engine oil pressure removed from APU engine ON & OFF sequence.
+
+//---------------------------------Version H2.0----------------------------------------------------------------------------------------------------------
+24th march: 1. APU batt high, low warning disabled i.e not given to GUI in present values.
+            2. Added following parameters to LOCO panel:
+	       Man. Connect / Disconnect == '2' value send to GUI that means this feild is not valid for HHP  
+	       AESS Ready                == '2' value send to GUI that means this feild is not valid for HHP 
+	       APU Enable                == '2' value send to GUI that means this feild is not valid for HHP 
+	       APU Disablereverse handle == '2' value send to GUI that means this feild is not valid for HHP 
+
+
+
+//---------------------------------Version H1.9----------------------------------------------------------------------------------------------------------
+21st march: 1. As in GUI loco scan time is added in timers feild. Send 0 value & while reading from GUI read it. 
+
+//---------------------------------Version H1.8----------------------------------------------------------------------------------------------------------
+10th March :1. Timer 8 is not used.Timer 7 now used for crank, run up , stop. prev timer 8 used.
+            2. In GUI APU Battery Voltage war & ala was not showing. Prev war & ala of max batt was sening to GUI. Now high & low batt values are send.
+
+ 
+
+
+//---------------------------------Version H1.7----------------------------------------------------------------------------------------------------------
+20th Feb: Code optimization
+          headers files separation
+
+17th Feb: Code optimization
+
+
+//---------------------------------Version H1.6----------------------------------------------------------------------------------------------------------
+8th Feb:
+        Major changes in 485 frame(CRC implementation)
+
+
+//---------------------------------Version H1.5----------------------------------------------------------------------------------------------------------
+2nd Feb : 1. Device ID settable
+          2. 12 V batt warn & alarm settings done properly by receiving them from GUI. Changed update_parameter locations prev MAX bat locations were used.
+ 
+          3. RTC settable 
+          4. 485 frame change
+ 
+
+31st Jan== GUI calibartion
+
+
+//---------------------------------Version H1.4----------------------------------------------------------------------------------------------------------
+28th Jan== GUI integration
+
+
+
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+
+20th Jan== Fuel level & apu votage averaging incresed
+
+
+
+9th Jan==
+          1. Air filter switch input is active 
+          2. APU & LOCO batt calibration changed 
+ 
+         1. Major changes done in apu_started();  function
+         2. Major changes done in check_all_para_in_eng_on_mode();
+         3. Major changes done in loco_para();
+         4. timer 7 & 8 init prescalar changes to 1153
+
+         1. APU power is now in KW
+
+          1.tripping fault is decided by separate flag used in fun scan_apu_para in eng on mode
+          2.Above flag added in 485 frame before all timings flag.
+          3.Removed comp air temp scanning which was APU canopy temp
+	  4.Ambient temp & mr pressure removed from scanning 
+         
+        When Mr pressure ois < 7.5 in manual mode APU will noit crank. Prev above feature was only in Auto mode.
+
+
+30th Dec== 1.Rectifier overtemp digital input scanned & added to 485 frame. No action to take even if fault occures.
+	   2. modifications in UART 6 ISR regarding enabling & disabling interrupt 6 & 1,
+	   3. LOCO RPM channel is used for alternator frequency
+
+28th Dec== 1. PB4 is now frequency input prev DE2 of 485 channel
+
+           2. Fuel level warning 7.0
+           3. Fuel level alarm 5.0 
+	   4. Fuel level capacity 18.7
+
+
+
+23th Dec== calibartion of APU volt & Loco Batt volt
+
+//---------------------------------Version 2.0-----------------------------------------------------------------------------------------------------------
+23rd Dec==  1. DC battery i.e. APU Voltage changed to PF4 from PF3
+            2. BCP Pressure changed to PF5 from PF3
+            3. Timer 3 & 4 used for frequency measurement 
+            4. Timer 7 & 8 used to replace timer 3 & 4
+            
+
+//-----------------------------------Version 1.0---------------------------------------------------------------------------------------------------------
+
+21st Dec== Testing with LCU
+
+15th Dec==   Fuel save report genereation under progress in daughter
+
+
+dc cont on off logic changed
+
+SD card format changed ok
+
+ APU VCANOPY TEMP removed from adc scanning
+
+28.	Software Calibration for DC Voltage, DC Current , Loco Battery Voltage, Loco Battery current to be done precisely. .(within +/-1V and +/- 1A). To be Tested
+29.	Data Logging facility with SD Memory card to be provided with downloading format. Provision for retrieving data through Memory Data card. . (As per Clause 5.0), Data should be logged at an interval of One Minute and store the status of all inputs to APU. A Suitable graphical user interface (PC based Software with print facility) shall be provided for the analysis of the logged data.
+30.	Onboard data storage device of adequate capacity to record data for storing all the data for at least 45 days and the data for engine Idle time and fuel saving report for at least 180 days.
+
+34.	In Manual Mode, MR Pressure logic to be added , If MR pressure is less than 7.5 Kg/Sqcm then do not crank the APU Engine, If MR pressure is greater than 7.5 Kg/Sqcm then only Crank the APU Engine. During Engine run mode if the MR Pressure falls below 7.5 Kg/Sqcm, the trip the APU Engine. The time of 10 Min shall be configurable
+35.	The unit for Bar for LLOP, MR Pressure and BCP Pressure to be made in Kg/Sqcm.
+36.	Display Screen update time and page scrolling time presently is 3sec, To be made 2 secs The Page should not flash, but the parameters to be updated.Sequence of Screen Page to be fixed.
+37.	In Auto mode Display of 2 Nos of Count down counter of 30 secs to be provided with Display message. .“System will enter into Fuel Save Mode within xx seconds”.
+
+38.	Display Screen to be added for Loco Battery Current,Loco Speed, EOT,EWT parameters.
+40.	All the Safety alarms/trip/Fault generated by LCC shall be displayed on APU Display.
+41.	Regarding APU Display Text message
+(a)	Rename ENG RPM as APU ENG RPM
+(b)	Rename ENG CLNT TMP as APU ENG CLNT TMP
+(c)	Rename ENG BATT VOLT as APU ENG BATT VOLT
+(d)	Rename ENG RUN as APU ENG RUN
+(e)	Rename ENG LOP as APU ENG LOP
+(f)	Rename APU FUEL Level as APU ENG FUEL LEVEL
+(g)	Remove APU Canopy Temp display Indication.
+(h)	Rename LOCO HANDLE POSITION as LOCO REV/FOR/NEU POSITION
+(i)	Rename ENGINE OVERSPEED as APU ENG OVERSPEED.
+(j)	Rename SERVICE CHECK LAMP  as APU CHECK ENG SERVICE  
+(k)	Rename LOW OIL PRESSURE as  APU LOW OIL PRESSURE 
+(l)	Rename HIGH CLT TEMP.SENSOR as APU HIGH WATER TEMP
+(m)	Rename WATER IN FUEL LAMP as. APU WATER IN FUEL
+42.	APU ECU Safety Parameters indication with Audio Visual alarm.
+43.	Maintenance Alarm after 500 Hours to be provided.(settable)
+44.	The Display Screen Page to be as follows
+Page 1 : APU Status, Date, Time, Run time APU Engine Status
+Page 2 : Loco Parameters
+Page 3 : APU Electricals Parmeters.
+Page 4 : APU Engine Parameters
+Page 5 : APU Engine ECU Safety Indications
+Page 6 : To be added (If required)
+45.	Whenever the switch APU Conn/Disc is disabled, A Suitable Audio Visual Alarm for 30 sec should be given to the Driver.The Alarm shall repeat after 1 Min with configurable time setting.
+46.	Engine RPM reading variation observed , to be within +/-10 rpm
+47.	Delay for DC Contactor On/Off of 5 secs to be provided.
+48.	Fault scrolling page to be provided
